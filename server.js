@@ -23,11 +23,26 @@ app.get("/api/hello", function (req, res) {
   res.json({ greeting: "hello API" });
 });
 
-app.get("/api/timestamp/:date_string", (req, res) => {
-  let dateString = req.params.date_string;
+app.get("/api/timestamp", (req, res) => {
+  let now = new Date();
+  res.json({
+    unix: now.getTime(),
+    utc: now.toUTCString(),
+  });
+});
 
-  console.log(dateString);
-  res.json({ error: "Invalid Date" });
+app.get("/api/timestamp/:date_string", (req, res) => {
+  let date_string = req.params.date_string;
+  let passedInValue = new Date(date_string);
+
+  if (passedInValue === "Invalid Date") {
+    res.json({ error: "Invalid Date" });
+  } else {
+    res.json({
+      unix: passedInValue.getTime(),
+      utc: passedInValue.toUTCString(),
+    });
+  }
 });
 
 // listen for requests :)
