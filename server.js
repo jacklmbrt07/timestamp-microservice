@@ -23,6 +23,7 @@ app.get("/api/hello", function (req, res) {
   res.json({ greeting: "hello API" });
 });
 
+
 app.get("/api/timestamp", (req, res) => {
   let now = new Date();
   res.json({
@@ -35,11 +36,19 @@ app.get("/api/timestamp/:date_string", (req, res) => {
   let date_string = req.params.date_string;
   let passedInValue = new Date(date_string);
 
-  if (passedInValue === "Invalid Date") {
+  if (parseInt(date_string) > 10000) {
+    let unixTime = new Date(parseInt(date_string));
+    res.json({
+      unix: unixTime.getTime(),
+      utc: unixTime.toUTCString(),
+    });
+  }
+
+  if (passedInValue == "Invalid Date") {
     res.json({ error: "Invalid Date" });
   } else {
     res.json({
-      unix: passedInValue.getTime(),
+      unix: passedInValue.valueOf(),
       utc: passedInValue.toUTCString(),
     });
   }
